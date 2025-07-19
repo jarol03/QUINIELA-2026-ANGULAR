@@ -1,0 +1,61 @@
+<section *ngIf="partidoId">
+  <h3>Pronósticos del Partido {{ partidoId }}</h3>
+
+  <input
+    type="text"
+    [(ngModel)]="busqueda"
+    placeholder="Buscar por usuario..."
+    class="buscador"
+  />
+
+  <!-- Botón para descargar PDF -->
+  <button (click)="generarPDF()" style="margin-bottom: 15px">
+    Descargar PDF
+  </button>
+
+  <!-- Botón para copiar datos para Excel -->
+  <button (click)="descargarParaExcel()" style="margin-left: 10px">
+    Descargar para Excel
+  </button>
+
+  <!-- Botón para descargar imagen de la tabla -->
+  <button (click)="descargarImagen()" style="margin-left: 10px">
+    Descargar Imagen
+  </button>
+
+  <div *ngIf="cargando">Cargando pronósticos...</div>
+
+  <!-- Bloque que se convertirá en PDF -->
+  <div id="reporte-tabla">
+    <table
+      *ngIf="!cargando && pronosticosFiltrados.length > 0; else sinResultados"
+      class="tabla-pronosticos"
+    >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>{{ nombreLocal || "local" }}</th>
+          <th>{{ nombreVisitante || " visitante" }}</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pronosticosFiltrados; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ p.nombreUsuario }}</td>
+
+          <td>{{ p.golesLocal }}</td>
+          <td>{{ p.golesVisitante }}</td>
+          <td>{{ p.fechaHora | date : "short" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #sinResultados>
+    <p style="color: #aaa; font-style: italic; margin-top: 10px">
+      No se encontraron pronósticos para este partido
+    </p>
+  </ng-template>
+</section>

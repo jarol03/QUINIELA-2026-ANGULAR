@@ -1,0 +1,58 @@
+<section *ngIf="modoVista === 'lista'">
+  <h3>Partidos creados</h3>
+
+  <div
+    style="display: flex; gap: 10px; align-items: center;"
+  >
+    <input
+      type="text"
+      placeholder="Buscar partido..."
+      [(ngModel)]="busqueda"
+      style="flex: 1"
+    />
+
+    <!-- Botones para ordenar -->
+    <button (click)="ordenarPorEstado()">Ordenar por Estado</button>
+    <button (click)="ordenarPorFecha('asc')">Fecha ↑</button>
+    <button (click)="ordenarPorFecha('desc')">Fecha ↓</button>
+  </div>
+
+  <ul>
+    <li *ngIf="partidosFiltrados.length === 0" class="sin-resultados">
+      No hay partidos.
+    </li>
+    <li *ngFor="let p of partidosFiltrados" class="partido-item">
+      <div class="partido-info">
+        <strong>{{ p.local }} vs {{ p.visitante }}</strong>
+
+        <span class="detalle">
+          Límite: {{ p.fechaLimite?.seconds * 1000 | date : "short" }}
+        </span>
+
+        <span class="estado"
+          >Estado: <em>{{ p.estado }}</em></span
+        >
+      </div>
+      <div class="botones">
+        <button (click)="editarPartido(p.id)">Editar</button>
+        <button (click)="verPronosticosPartido(p.id)">Ver Pronósticos</button>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<section *ngIf="modoVista === 'pronosticos' && partidoSeleccionadoId">
+  <button (click)="volverALista()">← Volver</button>
+  <app-tabla-pronosticos
+    [partidoId]="partidoSeleccionadoId"
+  ></app-tabla-pronosticos>
+</section>
+
+<section *ngIf="modoVista === 'editar' && partidoSeleccionadoId">
+  <button (click)="volverALista()">← Cancelar edición</button>
+  <app-formulario-partido
+    [partidoId]="partidoSeleccionadoId"
+    [modoResultado]="true"
+    (partidoCreado)="volverALista()"
+  ></app-formulario-partido>
+</section>

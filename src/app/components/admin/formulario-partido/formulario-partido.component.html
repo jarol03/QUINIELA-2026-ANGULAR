@@ -1,0 +1,57 @@
+<section style="margin-bottom: 40px">
+  <h3 *ngIf="!modoResultado">Crear Partido</h3>
+  <h3 *ngIf="modoResultado">Establecer Resultado</h3>
+
+  <form (ngSubmit)="onSubmit()" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px">
+    <ng-container *ngIf="!modoResultado">
+      <input
+        type="text"
+        placeholder="Equipo local"
+        [(ngModel)]="local"
+        name="local"
+        autocomplete="off"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Equipo visitante"
+        [(ngModel)]="visitante"
+        name="visitante"
+        autocomplete="off"
+        required
+      />
+      <input
+        type="datetime-local"
+        [(ngModel)]="fechaLimite"
+        name="fechaLimite"
+        required
+      />
+    </ng-container>
+
+    <ng-container *ngIf="modoResultado">
+      <p><strong>{{ local }}</strong> vs <strong>{{ visitante }}</strong></p>
+      <input
+        type="number"
+        placeholder="Goles local"
+        [(ngModel)]="golesLocal"
+        name="golesLocal"
+        autocomplete="off"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Goles visitante"
+        [(ngModel)]="golesVisitante"
+        name="golesVisitante"
+        autocomplete="off"
+        required
+      />
+    </ng-container>
+
+    <button type="submit">
+      {{ modoResultado ? 'Guardar resultado' : 'Crear partido' }}
+    </button>
+  </form>
+
+  <p *ngIf="mensaje" style="color: green">{{ mensaje }}</p>
+</section>

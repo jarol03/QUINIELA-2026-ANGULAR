@@ -1,0 +1,60 @@
+section {
+  margin-top: 30px;
+}
+
+input{
+  margin-bottom: 20px;
+}
+
+.usuarios-section h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.buscador {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+div {
+  overflow-x: auto; /* Para hacerla responsive */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+th {
+  background-color: #2c2c2c;
+}
+
+tr:hover {
+  background-color: #2a2a2a;
+}
+
+button {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+button:hover {
+  color: #c0392b;
+}

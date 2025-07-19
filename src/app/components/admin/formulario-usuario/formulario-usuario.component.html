@@ -1,0 +1,28 @@
+<section style="margin-bottom: 40px;">
+  <h3>Crear Usuario</h3>
+  <form
+    (ngSubmit)="onSubmit()"
+    style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;"
+  >
+    <input
+      type="text"
+      placeholder="Nombre"
+      [(ngModel)]="nombre"
+      name="nombre"
+      autocomplete="off"
+      required
+      style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;"
+    />
+    <input
+      type="text"
+      placeholder="Usuario"
+      [(ngModel)]="usuario"
+      name="usuario"
+      autocomplete="off"
+      required
+      style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;"
+    />
+    <button type="submit">Crear usuario</button>
+  </form>
+  <p *ngIf="mensaje" style="color: green;">{{ mensaje }}</p>
+</section>

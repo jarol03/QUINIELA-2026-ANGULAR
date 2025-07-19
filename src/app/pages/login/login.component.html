@@ -1,0 +1,13 @@
+<form (ngSubmit)="login()">
+  <h2>Iniciar sesión</h2>
+  <input
+    type="text"
+    placeholder="Usuario"
+    [(ngModel)]="usuario"
+    name="usuario"
+    autocomplete="off"
+    required
+  />
+  <p *ngIf="error" style="color: red">{{ error }}</p>
+  <button type="submit">Entrar</button>
+</form>

@@ -1,0 +1,40 @@
+<h2>Panel de Administración</h2>
+<p>Bienvenido, {{ usuario }}</p>
+
+<div class="contenido-admin">
+  <div class="columna-partidos">
+    <button (click)="toggleFormularioPartido()">
+      {{ mostrarFormularioPartido ? "Ocultar" : "Crear nuevo Partido" }}
+    </button>
+
+    <div *ngIf="mostrarFormularioPartido">
+      <app-formulario-partido
+        (partidoCreado)="refrescarPartidos()"
+      ></app-formulario-partido>
+    </div>
+
+    <app-lista-partidos></app-lista-partidos>
+  </div>
+
+  <div class="columna-usuarios">
+    <button (click)="toggleFormularioUsuario()">
+      {{ mostrarFormularioUsuario ? "Ocultar" : "Crear nuevo usuario" }}
+    </button>
+
+    <!-- Formulario visible solo si mostrarFormularioUsuario es true -->
+    <div *ngIf="mostrarFormularioUsuario" style="margin-top: 20px">
+      <app-formulario-usuario
+        (usuarioCreado)="refrescarUsuarios()"
+      ></app-formulario-usuario>
+
+      <p *ngIf="mensaje" style="color: green">{{ mensaje }}</p>
+    </div>
+
+    <app-tabla-usuarios></app-tabla-usuarios>
+  </div>
+</div>
+
+<!-- Botón de cerrar sesión -->
+<button (click)="cerrarSesion()" style="margin-top: 40px">
+  Cerrar sesión
+</button>

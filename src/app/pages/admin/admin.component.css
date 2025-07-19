@@ -1,0 +1,39 @@
+/* Estilo general del contenedor */
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+p{
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+/* Contenedor principal de columnas */
+.contenido-admin {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr;
+  gap: 20px;
+}
+
+/* Cada columna */
+.columna-usuarios,
+.columna-partidos {
+  background-color: #171717;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive: columnas apiladas en pantallas pequeñas */
+@media (max-width: 768px) {
+  .contenido-admin {
+    grid-template-columns: 1fr; /* 1 sola columna */
+  }
+
+  .columna-usuarios,
+  .columna-partidos {
+    margin-bottom: 20px;
+  }
+}

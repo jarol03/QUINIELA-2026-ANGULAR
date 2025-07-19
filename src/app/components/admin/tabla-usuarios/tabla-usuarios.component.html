@@ -1,0 +1,39 @@
+<section>
+  <h3 style="margin-top: 30px">Usuarios registrados</h3>
+
+  <input type="text" placeholder="Buscar usuario..." [(ngModel)]="busqueda" />
+
+  <div>
+    <table *ngIf="usuariosFiltrados.length > 0; else sinResultados" class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Usuario</th>
+          <th>Puntos</th>
+          <th>Borrar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of usuariosFiltrados; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.usuario }}</td>
+          <td>{{ u.puntos }}</td>
+          <td>
+            <button (click)="eliminarUsuario(u.id)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Plantilla alternativa si no hay resultados -->
+    <ng-template #sinResultados>
+      <p style="margin-top: 20px; font-style: italic; color: #999;">
+        No se encontraron usuarios con ese criterio de búsqueda.
+      </p>
+    </ng-template>
+  </div>
+</section>

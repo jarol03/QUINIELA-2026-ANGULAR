@@ -1,1 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body {
+  min-height: 100vh;
+  background-color: #242424;
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  background-color: #1a1a1a;
+  color: #fff;
+  transition: background-color 0.25s;
+  transition: .1s;
+}
+
+button:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+input {
+  width: 100%;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  color: #fff;
+  transition: background-color 0.25s, transform .1s;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1f1f1f;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #333;
+  color: #fff;
+}

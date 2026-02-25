@@ -1,57 +1,69 @@
-<section style="margin-bottom: 40px">
-  <h3 *ngIf="!modoResultado">Crear Partido</h3>
-  <h3 *ngIf="modoResultado">Establecer Resultado</h3>
+<section class="formulario-container">
+  <div class="header-compacto">
+    <h3 class="titulo-seccion">
+      {{ modoResultado ? '⚽ Resultado Final' : '📅 Nuevo Partido' }}
+    </h3>
+  </div>
 
-  <form (ngSubmit)="onSubmit()" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px">
+  <form (ngSubmit)="onSubmit()" class="form-dinamico">
+
     <ng-container *ngIf="!modoResultado">
-      <input
-        type="text"
-        placeholder="Equipo local"
-        [(ngModel)]="local"
-        name="local"
-        autocomplete="off"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Equipo visitante"
-        [(ngModel)]="visitante"
-        name="visitante"
-        autocomplete="off"
-        required
-      />
-      <input
-        type="datetime-local"
-        [(ngModel)]="fechaLimite"
-        name="fechaLimite"
-        required
-      />
+      <div class="setup-card">
+        <div class="input-group-grid">
+          <div class="input-block">
+            <label>Equipo Local</label>
+            <input type="text" placeholder="Ej: Real Madrid" [(ngModel)]="local" name="local" required
+              autocomplete="off" />
+          </div>
+
+          <div class="vs-badge-mini">VS</div>
+
+          <div class="input-block">
+            <label>Equipo Visitante</label>
+            <input type="text" placeholder="Ej: Barcelona" [(ngModel)]="visitante" name="visitante" required
+              autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="input-block date-picker">
+          <label>Cierre de Pronósticos</label>
+          <input type="datetime-local" [(ngModel)]="fechaLimite" name="fechaLimite" required />
+        </div>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="modoResultado">
-      <p><strong>{{ local }}</strong> vs <strong>{{ visitante }}</strong></p>
-      <input
-        type="number"
-        placeholder="Goles local"
-        [(ngModel)]="golesLocal"
-        name="golesLocal"
-        autocomplete="off"
-        required
-      />
-      <input
-        type="number"
-        placeholder="Goles visitante"
-        [(ngModel)]="golesVisitante"
-        name="golesVisitante"
-        autocomplete="off"
-        required
-      />
+      <div class="marcador-estadio">
+        <div class="team-result">
+          <span class="team-tag">LOCAL</span>
+          <strong class="team-name">{{ local }}</strong>
+          <input type="number" class="score-input" [(ngModel)]="golesLocal" name="golesLocal" placeholder="0" min="0"
+            onkeypress="return event.charCode >= 48" (focus)="$any($event.target).select()" required />
+        </div>
+
+        <div class="vs-divider">
+          <span>VS</span>
+        </div>
+
+        <div class="team-result">
+          <span class="team-tag">VISITANTE</span>
+          <strong class="team-name">{{ visitante }}</strong>
+          <input type="number" class="score-input" [(ngModel)]="golesVisitante" name="golesVisitante" placeholder="0"
+            min="0" onkeypress="return event.charCode >= 48" (focus)="$any($event.target).select()" required />
+        </div>
+      </div>
     </ng-container>
 
-    <button type="submit">
-      {{ modoResultado ? 'Guardar resultado' : 'Crear partido' }}
+    <button type="submit" [disabled]="cargando" class="btn-confirmar">
+      {{ cargando ? "Procesando..." : (modoResultado ? 'Guardar Resultado' : 'Publicar Partido') }}
     </button>
-  </form>
 
-  <p *ngIf="mensaje" style="color: green">{{ mensaje }}</p>
+    <div *ngIf="mensajeError" class="alert-msg msg-error" [class.shake-anim]="shakeTrigger">
+      <span class="icon">⚠️</span> {{ mensajeError }}
+    </div>
+
+    <div *ngIf="mensajeExito" class="alert-msg msg-exito">
+      <span class="icon">✅</span> {{ mensajeExito }}
+    </div>
+  </form>
 </section>

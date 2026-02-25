@@ -1,42 +1,114 @@
-form {
-  background-color: #2a2a2a;
+/* Contenedor que centra todo en la pantalla */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  /* Para que no toque los bordes del navegador */
+}
+
+/* La tarjeta del login */
+.login-card {
+  background-color: var(--bg-tarjeta);
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  border: 1px solid var(--color-borde);
   width: 100%;
   max-width: 400px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Cabecera del login */
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-placeholder {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.login-header h2 {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.login-header p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Etiquetas encima de los inputs */
+.input-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-h2 {
-  text-align: center;
+  gap: 8px;
   margin-bottom: 10px;
-  font-size: 1.8rem;
-  color: #fff;
 }
 
-input {
-  background-color: #1a1a1a;
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #aaa;
+  margin-left: 5px;
 }
 
-button {
-  background-color: #007bff;
-  font-weight: bold;
+/* Botón de entrada resaltado */
+.btn-entrar {
+  background-color: var(--color-primario) !important;
+  /* Azul en lugar de verde para login */
+  padding: 14px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
 }
 
-button:hover {
-  background-color: #0056b3;
+.btn-entrar:hover {
+  background-color: #2980b9 !important;
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
-p {
-  margin: 0;
-  font-size: 0.95rem;
-  text-align: center;
+/* Banner de error */
+.error-banner {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--color-peligro);
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--color-peligro);
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  animation: shake 0.4s ease;
 }
 
-p[style*="color: red"] {
-  color: #e74c3c !important;
-  margin-top: -10px;
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
 }

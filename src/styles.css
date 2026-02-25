@@ -1,30 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+/* VARIABLES GLOBALES - El motor de tu diseño */
+:root {
+  --bg-principal: #242424;
+  --bg-tarjeta: #1a1a1a;
+  --bg-tabla: #1f1f1f;
+  --color-texto: rgba(255, 255, 255, 0.87);
+  --color-borde: #333333;
+  --color-primario: #3498db;
+  /* Azul para Focus */
+  --color-exito: #27ae60;
+  /* Verde para Submit */
+  --color-peligro: #e74c3c;
+  /* Rojo para Eliminar */
+  --fuente: system-ui, -apple-system, sans-serif;
 
+  font-family: var(--fuente);
+  background-color: var(--bg-principal);
+  color: var(--color-texto);
+}
+
+/* RESET GENERAL */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  background-color: #242424;
-  color: rgba(255, 255, 255, 0.87);
-}
-
 body {
   min-height: 100vh;
-  background-color: #242424;
-  display: flex;
   padding: 20px;
-  justify-content: center;
-  align-items: flex-start;
+  line-height: 1.5;
 }
 
+/* TIPOGRAFÍA */
+h3 {
+  color: white;
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--color-borde);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* FORMULARIOS Y CONTENEDORES */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* INPUTS - Corregido para que el Focus se vea */
+input {
+  width: 100%;
+  padding: 0.7em 1.2em;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
+  background-color: var(--bg-tarjeta);
+  color: #fff;
+  /* El borde debe ser visible pero sutil para que el Focus funcione */
+  border: 1px solid var(--color-borde);
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  /* "Anillo" de enfoque */
+  background-color: #222;
+  /* Se aclara sutilmente */
+}
+
+/* BOTONES */
 button {
   border: none;
   border-radius: 8px;
@@ -32,38 +78,168 @@ button {
   font-size: 1rem;
   font-family: inherit;
   cursor: pointer;
-  background-color: #1a1a1a;
+  background-color: #333;
+  /* Gris para botones secundarios */
   color: #fff;
-  transition: background-color 0.25s;
-  transition: .1s;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {
-  background-color: #333;
-  transform: scale(1.05);
+  background-color: #444;
+  transform: translateY(-2px);
 }
 
-input {
-  width: 100%;
-  padding: 0.6em 1.2em;
-  font-size: 1rem;
-  font-family: inherit;
-  border: none;
-  border-radius: 8px;
-  background-color: #1a1a1a;
-  color: #fff;
-  transition: background-color 0.25s, transform .1s;
+button:active {
+  transform: translateY(0);
 }
 
+/* BOTÓN DE ACCIÓN (SUBMIT) */
+button[type="submit"],
+.btn-confirmar {
+  background-color: var(--color-exito);
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+}
+
+button[type="submit"]:hover {
+  background-color: #219150;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+/* TABLAS */
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #1f1f1f;
+  background-color: var(--bg-tabla);
+  border-radius: 8px;
+  overflow: hidden;
+  /* Para que las esquinas redondeadas funcionen */
 }
 
-th, td {
-  padding: 10px;
+th {
+  background-color: #151515;
+  color: var(--color-primario);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+th,
+td {
+  padding: 12px 15px;
   text-align: center;
-  border: 1px solid #333;
-  color: #fff;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  /* Efecto cristal esmerilado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--bg-principal);
+  padding: 30px;
+  border-radius: 16px;
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.btn-cerrar {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #333;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 1.2rem;
+  color: #bbb;
+}
+
+.btn-cerrar:hover {
+  background: var(--color-peligro);
+  color: white;
+}
+
+/* Base para ambos mensajes */
+.alert-msg {
+  margin-top: 15px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+}
+
+/* ÉXITO: Siempre Verde */
+.msg-exito {
+  background: rgba(39, 174, 96, 0.1);
+  /* Color éxito con transparencia */
+  color: var(--color-exito);
+  border-color: var(--color-exito);
+}
+
+/* ERROR: Siempre Rojo */
+.msg-error {
+  background: rgba(231, 76, 60, 0.1);
+  /* Color peligro con transparencia */
+  color: var(--color-peligro);
+  border-color: var(--color-peligro);
+}
+
+/* ANIMACIÓN DE SACUDIDA */
+.shake-anim {
+  animation: shake 0.35s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

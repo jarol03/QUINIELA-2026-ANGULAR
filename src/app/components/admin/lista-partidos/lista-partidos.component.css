@@ -1,68 +1,158 @@
-section {
-  margin-top: 30px;
-}
-
-.lista-partidos h3 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-div {
-  margin-bottom: 20px;
-}
-
+/* Contenedor de la lista */
 ul {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   padding: 0;
-  margin: 0;
 }
 
-.sin-resultados {
-  margin-top: 15px;
-  font-style: italic;
-  color: #777;
-  padding: 10px;
-  text-align: center;
-  background-color: #0f0e0e;
-  border-radius: 8px;
-}
-
+/* Tarjeta de cada partido */
 .partido-item {
-  border: 1px solid #ddd;
+  background-color: var(--bg-tarjeta);
+  border: 1px solid var(--color-borde);
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.1s ease-in-out;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 
 .partido-item:hover {
-  transform: scale(1.01);
-  border-color: #007bff;
+  border-color: var(--color-primario);
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Información (Lado izquierdo) */
 .partido-info {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .partido-info strong {
-  font-size: 16px;
-  display: block;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: 0.3px;
 }
 
-.partido-info .detalle,
-.partido-info .estado {
-  display: block;
-  font-size: 14px;
-  margin-top: 4px;
+.detalle {
+  font-size: 0.85rem;
+  color: #888;
 }
 
+.estado {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.estado em {
+  font-style: normal;
+  font-weight: bold;
+  color: var(--color-primario);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  background: rgba(52, 152, 219, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Grupo de botones (Lado derecho) */
 .botones {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.botones button:hover {
-  background-color: #0056b3;
+/* Botón específico para Ver Puntos */
+.btn-puntos {
+  background-color: var(--color-primario) !important;
+}
+
+.btn-puntos:hover {
+  background-color: #2980b9 !important;
+}
+
+/* Mensaje cuando no hay datos */
+.sin-resultados {
+  text-align: center;
+  padding: 40px;
+  background-color: var(--bg-tabla);
+  border-radius: 12px;
+  border: 1px dashed var(--color-borde);
+  color: #666;
+  font-style: italic;
+}
+
+.toolbar-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  background: var(--bg-tarjeta);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid var(--color-borde);
+}
+
+.search-container {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Resalta el botón cuando el filtro está activo */
+button.active {
+  background-color: var(--color-primario);
+  border-color: var(--color-primario);
+  color: white;
+}
+
+button {
+  white-space: nowrap;
+}
+
+
+/* --- VISTAS SECUNDARIAS (Pronósticos/Ganadores) --- */
+.detalle-vista {
+  animation: fadeIn 0.3s ease;
+}
+
+.btn-volver {
+  margin-bottom: 20px;
+  background-color: #2a2a2a;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 600px) {
+  .partido-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .botones {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

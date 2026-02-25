@@ -1,80 +1,202 @@
+/* Contenedor Principal */
 .formulario-container {
-  max-width: 600px;
-  width: 100%;
-  background-color: #2a2a2a;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 15px;
+  color: #fff;
 }
 
-form {
+/* Header de Usuario */
+.user-header {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-form h2 {
-  text-align: center;
-  margin-bottom: 10px;
+.user-header h2 {
   font-size: 1.5rem;
+  line-height: 1.2;
 }
 
-form p {
+.user-header h2 span {
+  color: #3498db;
+  display: block;
+  font-weight: 800;
+}
+
+.puntos-card {
+  background: #1a1a1a;
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid #333;
   text-align: center;
-  font-size: 1rem;
-  color: #ccc;
+}
+
+.puntos-card .label {
+  font-size: 0.65rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.puntos-card .value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+/* Select Estilizado */
+.select-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 select {
   width: 100%;
-  padding: 0.6em 1.2em;
-  font-size: 1rem;
-  font-family: inherit;
-  border: none;
-  border-radius: 8px;
+  padding: 12px 15px;
   background-color: #1a1a1a;
   color: #fff;
-  transition: background-color 0.25s;
+  border: 1px solid #333;
+  border-radius: 10px;
+  font-size: 1rem;
+  appearance: none;
+  /* Quita estilo nativo */
+  cursor: pointer;
 }
 
-select:focus {
-  outline: 2px solid #007bff;
+/* Flecha personalizada para el select */
+.select-wrapper::after {
+  content: "▼";
+  font-size: 0.8rem;
+  color: #888;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Inputs Numéricos */
+.versus-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.equipo {
+  flex: 1;
+  text-align: center;
+}
+
+.equipo label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ccc;
 }
 
 input[type="number"] {
-  max-width: 100%;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
+  width: 100%;
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 2rem;
   font-weight: bold;
+  text-align: center;
+  padding: 15px 0;
+  transition: border-color 0.3s;
 }
 
-button[type="submit"]:hover {
-  background-color: #0056b3;
+input[type="number"]:focus {
+  border-color: #3498db;
+  outline: none;
+  background: #1a1a1a;
 }
 
-/* Mensaje de confirmación o error */
+/* Quitar flechas molestas de los números */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.separador {
+  margin-top: 25px;
+  font-weight: 900;
+  color: #444;
+  font-size: 0.8rem;
+}
+
+/* Botón y Mensajes */
+.btn-enviar {
+  width: 100%;
+  background: #27ae60;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+}
+
 .mensaje {
   text-align: center;
-  font-size: 0.95rem;
-  color: #4caf50; /* verde para mensaje positivo */
-  margin-top: -5px;
+  margin-top: 15px;
+  color: #2ecc71;
+  font-weight: 500;
 }
 
-/* Tabla de pronósticos */
-.tabla-pronosticos {
-  margin-top: 20px;
-  border-radius: 10px;
-  overflow: hidden;
+/* Tabla de Historial */
+.mis-pronosticos h3 {
+  margin: 30px 0 15px;
+  font-size: 1.2rem;
 }
 
-.tabla-pronosticos th {
-  background-color: #333;
+.tabla-wrapper {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+th {
+  color: #3498db;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+td {
+  padding: 12px 10px;
+  text-align: center;
+  background: #222;
+  font-size: 0.9rem;
+}
+
+td:first-child {
+  border-radius: 8px 0 0 8px;
+  text-align: left;
+}
+
+td:last-child {
+  border-radius: 0 8px 8px 0;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.goles {
+  color: #3498db;
   font-weight: bold;
-}
-
-.tabla-pronosticos tr:hover {
-  background-color: #2c2c2c;
+  font-size: 1.1rem;
 }

@@ -1,79 +1,72 @@
 <div class="formulario-container" *ngIf="usuarioId">
-  <form (ngSubmit)="enviarPronostico()">
-    <h2>Hola {{ nombreUsuario }}, haz tu pronóstico</h2>
-    <p>
-      Tus puntos: <strong>{{ puntos }}</strong>
-    </p>
+  <header class="user-header">
+    <h2>Hola, <span>{{ nombreUsuario }}</span></h2>
+    <div class="puntos-card">
+      <span class="label">Tus puntos</span>
+      <span class="value">{{ puntos }}</span>
+    </div>
+  </header>
 
-    <select [(ngModel)]="partidoId" name="partidoId" required>
-      <option value="">-- Selecciona un partido --</option>
-      <option *ngFor="let p of partidos" [value]="p.id">
-        {{ p.local }} vs {{ p.visitante }}
-      </option>
-    </select>
-
-    <p *ngIf="partidoSeleccionado">
-      Fecha de cierre:
-      <strong>{{
-        partidoSeleccionado.fechaLimite.seconds * 1000
-          | date : "dd/MM/yyyy, h:mm a"
-      }}</strong>
-    </p>
-
-    <div
-      style="display: flex; gap: 10px; align-items: center; margin-top: 10px"
-    >
-      <div style="flex: 1">
-        <label style="display: block; font-weight: bold; margin-bottom: 4px">
-          {{ partidoSeleccionado?.local || "Local" }}
-        </label>
-        <input
-          type="number"
-          [(ngModel)]="golesLocal"
-          name="golesLocal"
-          required
-          style="width: 100%"
-        />
-      </div>
-
-      <div style="flex: 1">
-        <label style="display: block; font-weight: bold; margin-bottom: 4px">
-          {{ partidoSeleccionado?.visitante || "Visitante" }}
-        </label>
-        <input
-          type="number"
-          [(ngModel)]="golesVisitante"
-          name="golesVisitante"
-          required
-          style="width: 100%"
-        />
+  <form (ngSubmit)="$event.preventDefault(); enviarPronostico()" class="pronostico-form">
+    <div class="campo-grupo">
+      <label class="label-principal">Selecciona el partido</label>
+      <div class="select-wrapper">
+        <select [(ngModel)]="partidoId" name="partidoId" required>
+          <option value="">-- Elige un enfrentamiento --</option>
+          <option *ngFor="let p of partidos" [value]="p.id">
+            {{ p.local }} vs {{ p.visitante }}
+          </option>
+        </select>
       </div>
     </div>
 
-    <button type="submit">Enviar Pronóstico</button>
+    <div class="info-cierre" *ngIf="partidoSeleccionado">
+      <span class="reloj-icon">⏰</span>
+      Cierra: {{ partidoSeleccionado.fechaLimite.seconds * 1000 | date : "dd/MM, h:mm a" }}
+    </div>
 
+    <div class="versus-container">
+      <div class="equipo">
+        <label>{{ partidoSeleccionado?.local || "Local" }}</label>
+        <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="golesLocal" name="golesLocal"
+          placeholder="0" (focus)="$any($event.target).select()" required />
+      </div>
+
+      <div class="separador">VS</div>
+
+      <div class="equipo">
+        <label>{{ partidoSeleccionado?.visitante || "Visitante" }}</label>
+        <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="golesVisitante"
+          name="golesVisitante" placeholder="0" (focus)="$any($event.target).select()" required />
+      </div>
+    </div>
+
+    <button type="submit" class="btn-enviar" [disabled]="golesLocal === null || golesVisitante === null">Enviar
+      Pronóstico</button>
     <p *ngIf="mensaje" class="mensaje">{{ mensaje }}</p>
   </form>
 
-  <h3>Mis pronósticos</h3>
-  <p *ngIf="pronosticos.length === 0">No has hecho pronósticos todavía.</p>
-
-  <table *ngIf="pronosticos.length > 0" class="tabla-pronosticos">
-    <thead>
-      <tr>
-        <th>Partido</th>
-        <th>Goles Local</th>
-        <th>Goles Visitante</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of pronosticos">
-        <td>{{ p.partidoId }}</td>
-        <td>{{ p.golesLocal }}</td>
-        <td>{{ p.golesVisitante }}</td>
-        <td>{{ p.fechaHora | date : "short" }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <section class="mis-pronosticos">
+    <h3>Mis pronósticos</h3>
+    <div class="tabla-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Partido</th>
+            <th>L</th>
+            <th>V</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pronosticos">
+            <td class="partido-nombre">{{ p.partidoId }}</td>
+            <td class="goles">{{ p.golesLocal }}</td>
+            <td class="goles">{{ p.golesVisitante }}</td>
+            <td class="fecha-celda">{{ p.fechaHora | date : "dd/MM" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </div>

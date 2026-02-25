@@ -1,58 +1,57 @@
-<section *ngIf="modoVista === 'lista'">
+<section *ngIf="modoVista === 'lista' || modoVista === 'editar'">
   <h3>Partidos creados</h3>
 
-  <div
-    style="display: flex; gap: 10px; align-items: center;"
-  >
-    <input
-      type="text"
-      placeholder="Buscar partido..."
-      [(ngModel)]="busqueda"
-      style="flex: 1"
-    />
+  <div class="toolbar-admin">
+    <div class="search-container">
+      <input type="text" placeholder="🔍 Buscar partido..." [(ngModel)]="busqueda" />
+    </div>
 
-    <!-- Botones para ordenar -->
-    <button (click)="ordenarPorEstado()">Ordenar por Estado</button>
-    <button (click)="ordenarPorFecha('asc')">Fecha ↑</button>
-    <button (click)="ordenarPorFecha('desc')">Fecha ↓</button>
+    <div class="filter-actions">
+      <button (click)="alternarSoloPendientes()" [class.active]="soloPendientes">
+        {{ soloPendientes ? '👁 Ver Todos' : '⏳ Solo sin resultado' }}
+      </button>
+
+      <button (click)="toggleOrdenFecha()">
+        Fecha {{ ordenFechaAsc ? '↑' : '↓' }}
+      </button>
+
+      <button (click)="ordenarPorEstado()">Estado</button>
+    </div>
   </div>
 
   <ul>
-    <li *ngIf="partidosFiltrados.length === 0" class="sin-resultados">
-      No hay partidos.
-    </li>
+    <li *ngIf="partidosFiltrados.length === 0" class="sin-resultados">No hay partidos.</li>
     <li *ngFor="let p of partidosFiltrados" class="partido-item">
       <div class="partido-info">
         <strong>{{ p.local }} vs {{ p.visitante }}</strong>
-
-        <span class="detalle">
-          Límite: {{ p.fechaLimite?.seconds * 1000 | date : "short" }}
-        </span>
-
-        <span class="estado"
-          >Estado: <em>{{ p.estado }}</em></span
-        >
+        <span class="detalle">Límite: {{ p.fechaLimite?.seconds * 1000 | date : "short" }}</span>
+        <span class="estado">Estado: <em>{{ p.estado }}</em></span>
       </div>
+
       <div class="botones">
-        <button (click)="editarPartido(p.id)">Editar</button>
+        <button *ngIf="p.estado !== 'Jugado'" (click)="editarPartido(p.id)">Establecer Resultado</button>
         <button (click)="verPronosticosPartido(p.id)">Ver Pronósticos</button>
+        <button *ngIf="p.estado === 'Jugado'" (click)="verGanadores(p)" class="btn-puntos">Ver Puntos</button>
       </div>
     </li>
   </ul>
 </section>
 
+<div class="modal-overlay" *ngIf="modoVista === 'editar' && partidoSeleccionadoId" (click)="volverALista()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="btn-cerrar" (click)="volverALista()">×</button>
+
+    <app-formulario-partido [partidoId]="partidoSeleccionadoId" [modoResultado]="true" (partidoCreado)="volverALista()">
+    </app-formulario-partido>
+  </div>
+</div>
+
 <section *ngIf="modoVista === 'pronosticos' && partidoSeleccionadoId">
   <button (click)="volverALista()">← Volver</button>
-  <app-tabla-pronosticos
-    [partidoId]="partidoSeleccionadoId"
-  ></app-tabla-pronosticos>
+  <app-tabla-pronosticos [partidoId]="partidoSeleccionadoId"></app-tabla-pronosticos>
 </section>
 
-<section *ngIf="modoVista === 'editar' && partidoSeleccionadoId">
-  <button (click)="volverALista()">← Cancelar edición</button>
-  <app-formulario-partido
-    [partidoId]="partidoSeleccionadoId"
-    [modoResultado]="true"
-    (partidoCreado)="volverALista()"
-  ></app-formulario-partido>
+<section *ngIf="modoVista === 'ganadores' && partidoSeleccionadoId">
+  <button (click)="volverALista()">← Volver</button>
+  <app-tabla-ganadores [partidoId]="partidoSeleccionadoId"></app-tabla-ganadores>
 </section>

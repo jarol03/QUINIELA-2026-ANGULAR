@@ -7,6 +7,7 @@ import { FormularioUsuarioComponent } from '../../components/admin/formulario-us
 import { TablaUsuariosComponent } from '../../components/admin/tabla-usuarios/tabla-usuarios.component';
 import { FormularioPartidoComponent } from '../../components/admin/formulario-partido/formulario-partido.component';
 import { ListaPartidosComponent } from '../../components/admin/lista-partidos/lista-partidos.component';
+import { RankingComponent } from '../../components/admin/ranking/ranking.component';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +18,7 @@ import { ListaPartidosComponent } from '../../components/admin/lista-partidos/li
     FormularioPartidoComponent,
     TablaUsuariosComponent,
     ListaPartidosComponent,
+    RankingComponent,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css',
@@ -47,7 +49,7 @@ export class AdminComponent {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService
-  ) {}
+  ) { }
 
   //FUNCIONES VISUALES
   toggleFormularioUsuario() {
@@ -75,7 +77,10 @@ export class AdminComponent {
   }
 
   refrescarPartidos() {
-    this.listaPartidos.cargarPartidos();
+    if (this.listaPartidos) {
+      this.listaPartidos.cargarPartidos();
+    }
+    this.toggleFormularioPartido();
   }
 
   cerrarSesion() {

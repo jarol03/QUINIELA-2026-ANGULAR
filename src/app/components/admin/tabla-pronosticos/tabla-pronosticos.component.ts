@@ -20,7 +20,7 @@ export class TablaPronosticosComponent {
   nombreLocal: string = '';
   nombreVisitante: string = '';
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
   async ngOnInit() {
     if (this.partidoId) {

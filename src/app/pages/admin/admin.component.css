@@ -1,39 +1,108 @@
-/* Estilo general del contenedor */
+.admin-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px;
+}
 
-h2 {
-  text-align: center;
+/* CABECERA */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--bg-tarjeta);
+  border-radius: 12px;
+  border: 1px solid var(--color-borde);
 }
 
-p{
-  font-size: 20px;
-  margin-bottom: 5px;
+.header-info h2 {
+  margin-bottom: 0;
+  text-align: left;
+  font-size: 1.5rem;
 }
 
-/* Contenedor principal de columnas */
+.header-info p {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.header-info span {
+  color: var(--color-primario);
+  font-weight: bold;
+}
+
+.btn-logout {
+  background-color: transparent;
+  border: 1px solid var(--color-peligro);
+  color: var(--color-peligro);
+}
+
+.btn-logout:hover {
+  background-color: var(--color-peligro);
+  color: white;
+}
+
+/* REJILLA DE PANELES */
 .contenido-admin {
   display: grid;
-  grid-template-columns: 2fr 1.5fr;
-  gap: 20px;
+  grid-template-columns: 1.8fr 1.2fr;
+  /* Partidos más ancho que usuarios */
+  gap: 25px;
 }
 
-/* Cada columna */
-.columna-usuarios,
-.columna-partidos {
+.columna-panel {
   background-color: #171717;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid var(--color-borde);
+  overflow: visible;
+  /* Mantiene el contenido dentro de los bordes redondeados */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Responsive: columnas apiladas en pantallas pequeñas */
-@media (max-width: 768px) {
-  .contenido-admin {
-    grid-template-columns: 1fr; /* 1 sola columna */
-  }
+/* Encabezado interno de cada panel */
+.panel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--color-borde);
+}
 
-  .columna-usuarios,
-  .columna-partidos {
-    margin-bottom: 20px;
+.panel-top h3 {
+  margin: 0;
+  border: none;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+.panel-body {
+  padding: 20px;
+}
+
+/* BOTÓN DE CREACIÓN */
+.btn-add {
+  background-color: var(--color-exito) !important;
+  font-size: 0.85rem;
+  padding: 8px 15px;
+}
+
+/* MENSAJE DE ÉXITO */
+.success-msg {
+  color: var(--color-exito);
+  background: rgba(39, 174, 96, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+  .contenido-admin {
+    grid-template-columns: 1fr;
   }
 }

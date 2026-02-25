@@ -1,0 +1,42 @@
+<section *ngIf="partidoId">
+  <h3>🏆 Tabla de Puntos: {{ nombreLocal }} vs {{ nombreVisitante }}</h3>
+
+  <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por usuario..." class="buscador" />
+
+  <div class="botones-descarga">
+    <button (click)="generarPDF()">Descargar PDF</button>
+    <button (click)="descargarParaExcel()" style="margin-left: 10px">Descargar Excel</button>
+    <button (click)="descargarImagen()" style="margin-left: 10px">Descargar Imagen</button>
+  </div>
+
+  <div *ngIf="cargando">Calculando puntos...</div>
+
+  <div id="reporte-ganadores">
+    <table *ngIf="!cargando && resultadosFiltrados.length > 0; else sinResultados" class="tabla-pronosticos">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>{{ nombreLocal }}</th>
+          <th>{{ nombreVisitante }}</th>
+          <th>Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of resultadosFiltrados; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.nombre }}</td>
+          <td>{{ r.golesLocal }}</td>
+          <td>{{ r.golesVisitante }}</td>
+          <td [style.font-weight]="'bold'" [style.color]="r.puntosGanados > 0 ? 'green' : 'red'">
+            +{{ r.puntosGanados }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #sinResultados>
+    <p>No se encontraron resultados.</p>
+  </ng-template>
+</section>

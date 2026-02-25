@@ -1,0 +1,56 @@
+<button class="btn-ranking-float" (click)="abrirRanking()" *ngIf="ranking.length > 0">
+  <span class="icon">🏆</span>
+  <span class="badge-count">{{ ranking.length }}</span>
+  <span class="text">Ver Ranking</span>
+</button>
+
+<div class="rk-overlay" *ngIf="mostrarModal" (click)="cerrarRanking()">
+
+  <div class="rk-modal-card" (click)="$event.stopPropagation()">
+
+    <header class="rk-header">
+      <div class="rk-titulo-wrap">
+        <h3>🏆 Ranking de Posiciones</h3>
+        <p>Quiniela 2026 • {{ ranking.length }} usuarios</p>
+      </div>
+      <button class="rk-btn-cerrar" (click)="cerrarRanking()">×</button>
+    </header>
+
+    <div id="rankingCaptureArea" class="rk-capture-box">
+      <div class="rk-capture-header">
+        <span class="rk-brand">QUINIELA 2026</span>
+        <span class="rk-date">{{ fechaActual | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+
+      <div class="rk-grid">
+        <div *ngFor="let usuario of ranking; let i = index" class="rk-item"
+          [ngClass]="obtenerClaseZona(i + 1, ranking.length)">
+          <span class="rk-pos">{{ i + 1 }}°</span>
+          <div class="rk-user-info">
+            <span class="rk-name">{{ usuario.nombre }}</span>
+          </div>
+          <span class="rk-pts"><strong>{{ usuario.puntos }}</strong> pts</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="rk-actions">
+      <button class="rk-btn-main" (click)="tomarFotoRanking()" [disabled]="capturando">
+        {{ capturando ? '⌛ Generando...' : '📸 Crear Imagen WhatsApp' }}
+      </button>
+    </footer>
+
+    <div class="rk-preview-layer" *ngIf="fotoUrl">
+      <div class="rk-preview-card">
+        <h4>✅ Imagen Generada</h4>
+        <img [src]="fotoUrl" alt="Ranking">
+        <div class="rk-preview-btns">
+          <a [href]="fotoUrl" [download]="nombreArchivo" class="rk-btn-dl">📥 Descargar</a>
+          <button *ngIf="canShare" (click)="compartirRanking()" class="rk-btn-sh">🔗 Compartir</button>
+          <button (click)="fotoUrl = null" class="rk-btn-cancel">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,40 +1,55 @@
-<h2>Panel de Administración</h2>
-<p>Bienvenido, {{ usuario }}</p>
-
-<div class="contenido-admin">
-  <div class="columna-partidos">
-    <button (click)="toggleFormularioPartido()">
-      {{ mostrarFormularioPartido ? "Ocultar" : "Crear nuevo Partido" }}
-    </button>
-
-    <div *ngIf="mostrarFormularioPartido">
-      <app-formulario-partido
-        (partidoCreado)="refrescarPartidos()"
-      ></app-formulario-partido>
+<div class="admin-dashboard">
+  <header class="dashboard-header">
+    <div class="header-info">
+      <h2>Panel de Administración</h2>
+      <p>Bienvenido, <span>{{ usuario }}</span></p>
     </div>
+    <button class="btn-logout" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </header>
 
-    <app-lista-partidos></app-lista-partidos>
+  <div class="modal-overlay" *ngIf="mostrarFormularioPartido" (click)="toggleFormularioPartido()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="btn-cerrar" (click)="toggleFormularioPartido()">×</button>
+      <app-formulario-partido (partidoCreado)="refrescarPartidos()"></app-formulario-partido>
+    </div>
   </div>
 
-  <div class="columna-usuarios">
-    <button (click)="toggleFormularioUsuario()">
-      {{ mostrarFormularioUsuario ? "Ocultar" : "Crear nuevo usuario" }}
-    </button>
-
-    <!-- Formulario visible solo si mostrarFormularioUsuario es true -->
-    <div *ngIf="mostrarFormularioUsuario" style="margin-top: 20px">
-      <app-formulario-usuario
-        (usuarioCreado)="refrescarUsuarios()"
-      ></app-formulario-usuario>
-
-      <p *ngIf="mensaje" style="color: green">{{ mensaje }}</p>
+  <div class="modal-overlay" *ngIf="mostrarFormularioUsuario" (click)="toggleFormularioUsuario()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="btn-cerrar" (click)="toggleFormularioUsuario()">×</button>
+      <app-formulario-usuario (usuarioCreado)="refrescarUsuarios()"></app-formulario-usuario>
+      <p *ngIf="mensaje" class="success-msg">{{ mensaje }}</p>
     </div>
-
-    <app-tabla-usuarios></app-tabla-usuarios>
   </div>
+
+  <main class="contenido-admin">
+    <section class="columna-panel">
+      <div class="panel-top">
+        <h3>Gestión de Partidos</h3>
+        <button class="btn-add" (click)="toggleFormularioPartido()">+ Nuevo Partido</button>
+      </div>
+      <div class="panel-body">
+        <app-lista-partidos #listaPartidosComponent></app-lista-partidos>
+      </div>
+    </section>
+
+    <section class="columna-panel">
+      <div class="panel-top">
+        <h3>Usuarios</h3>
+        <button class="btn-add" (click)="toggleFormularioUsuario()">+ Nuevo Usuario</button>
+      </div>
+      <div class="panel-body">
+        <app-tabla-usuarios></app-tabla-usuarios>
+      </div>
+    </section>
+  </main>
 </div>
 
-<!-- Botón de cerrar sesión -->
-<button (click)="cerrarSesion()" style="margin-top: 40px">
-  Cerrar sesión
-</button>
+<div class="admin-dashboard">
+  <main class="contenido-admin">
+  </main>
+
+  <app-ranking [ranking]="usuarios"></app-ranking>
+</div>

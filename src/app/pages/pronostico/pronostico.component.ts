@@ -22,7 +22,7 @@ export class PronosticoComponent {
   pronosticos: any[] = [];
   mensaje: string = '';
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
   async ngOnInit() {
     this.usuarioId = sessionStorage.getItem('usuario');
@@ -50,9 +50,21 @@ export class PronosticoComponent {
   }
 
   async enviarPronostico() {
-    console.log('Usuario ID:', this.usuarioId);
-    console.log('Partido ID:', this.partidoId);
+
+    console.log("Partido ID: " + this.partidoId);
+    console.log("Usuario ID: " + this.usuarioId);
+
+    if (!this.partidoId) {
+      this.mensaje = "Por favor seleccione un partido";
+      return;
+    }
+
     if (!this.usuarioId || !this.partidoId) return;
+
+    if (this.golesLocal === null || this.golesVisitante === null || this.golesLocal < 0 || this.golesVisitante < 0) {
+      this.mensaje = "Por favor, ingresa un resultados válidos (0 o más)";
+      return;
+    }
 
     const partido = this.partidos.find((p) => p.id === this.partidoId);
 

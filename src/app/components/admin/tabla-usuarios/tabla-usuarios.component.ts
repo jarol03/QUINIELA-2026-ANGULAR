@@ -13,7 +13,7 @@ export class TablaUsuariosComponent {
   usuarios: any[] = [];
   busqueda: string = '';
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
   async ngOnInit() {
     await this.cargarUsuarios();
@@ -28,7 +28,7 @@ export class TablaUsuariosComponent {
       (u) =>
         u.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
         u.usuario.toLowerCase().includes(this.busqueda.toLowerCase())
-    );
+    ).sort((a, b) => (b.puntos || 0) - (a.puntos || 0));
   }
 
   async eliminarUsuario(usuarioId: string) {

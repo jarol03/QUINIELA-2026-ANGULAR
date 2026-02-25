@@ -1,0 +1,332 @@
+/* ==========================================================================
+   BOTÓN FLOTANTE (FAB)
+   ========================================================================== */
+.btn-ranking-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 99;
+  /* Por debajo de los modales de formulario del admin */
+  background: #f1c40f;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn-ranking-float:hover {
+  transform: scale(1.05);
+  background: #f39c12;
+}
+
+.badge-count {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   ESTRUCTURA DEL MODAL (rk- para evitar conflictos)
+   ========================================================================== */
+.rk-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rk-modal-card {
+  background: #171717;
+  width: 90vw;
+  max-width: 1000px;
+  max-height: 85vh;
+  border-radius: 16px;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  background: #1a1a1a;
+}
+
+.rk-titulo-wrap h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.rk-titulo-wrap p {
+  margin: 0;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.rk-btn-cerrar {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   ÁREA DE CAPTURA (Diseño de la Imagen)
+   ========================================================================== */
+.rk-capture-box {
+  background: #171717;
+  padding: 25px;
+}
+
+.rk-capture-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(241, 196, 15, 0.3);
+}
+
+.rk-brand {
+  color: #f1c40f;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.rk-date {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* Grid de Columnas */
+.rk-grid {
+  column-count: 3;
+  column-gap: 20px;
+}
+
+.rk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #222;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  break-inside: avoid;
+  border-left: 4px solid transparent;
+}
+
+/* Zonas de clasificación */
+.zona-dinero {
+  border-left-color: #f1c40f;
+  background: linear-gradient(90deg, rgba(241, 196, 15, 0.1), #222);
+}
+
+.zona-posibilidades {
+  border-left-color: #3498db;
+}
+
+.zona-descenso {
+  border-left-color: #e74c3c;
+}
+
+.rk-pos {
+  font-weight: bold;
+  color: #888;
+  min-width: 30px;
+}
+
+.rk-user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #eee;
+}
+
+.rk-alias {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.rk-pts {
+  font-size: 0.9rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.rk-pts strong {
+  color: #f1c40f;
+}
+
+/* ==========================================================================
+   ACCIONES Y BOTONES
+   ========================================================================== */
+.rk-actions {
+  padding: 20px;
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+}
+
+.rk-btn-main {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.rk-btn-main:hover:not(:disabled) {
+  background: #2ecc71;
+}
+
+.rk-btn-main:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   PREVIEW DE LA IMAGEN GENERADA
+   ========================================================================== */
+.rk-preview-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.rk-preview-card {
+  background: #222;
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  border: 1px solid #444;
+}
+
+.rk-preview-card h4 {
+  margin-top: 0;
+  color: #27ae60;
+}
+
+.rk-preview-card img {
+  max-width: 100%;
+  max-height: 50vh;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 1px solid #333;
+}
+
+/* Botones del Preview */
+.rk-preview-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.rk-btn-dl,
+.rk-btn-sh,
+.rk-btn-cancel {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.rk-btn-dl:hover,
+.rk-btn-sh:hover,
+.rk-btn-cancel:hover {
+  transform: translateY(-2px);
+}
+
+.rk-btn-dl {
+  background: #3498db;
+  color: white;
+}
+
+/* Descargar */
+.rk-btn-sh {
+  background: #25d366;
+  color: white;
+}
+
+/* Compartir */
+.rk-btn-cancel {
+  background: #444;
+  color: white;
+}
+
+/* Cerrar */
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .rk-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .rk-grid {
+    column-count: 1;
+  }
+
+  .rk-modal-card {
+    width: 95vw;
+    height: 95vh;
+  }
+
+  .rk-btn-dl,
+  .rk-btn-sh,
+  .rk-btn-cancel {
+    width: 100%;
+  }
+}

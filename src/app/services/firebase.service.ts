@@ -13,10 +13,10 @@ import {
 } from '@angular/fire/firestore';
 
 type Pronostico = {
-      usuarioId: string;
-      golesLocal: number;
-      golesVisitante: number;
-    };
+  usuarioId: string;
+  golesLocal: number;
+  golesVisitante: number;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -163,42 +163,57 @@ export class FirebaseService {
     return !snap.empty;
   }
 
+  // ESTA ES LA QUE USARÁS EN LA TABLA DE GANADORES
+  // Solo consulta y compara, NO guarda nada en la base de datos.
+  async calcularResultadosPuntos(partidoId: string, gLocal: number, gVisita: number) {
+    // USAMOS TU FUNCIÓN EXISTENTE
+    const pronosticos = await this.obtenerPronosticosPorPartido(partidoId);
+
+    const resultadoReal = gLocal > gVisita ? 'local' : gLocal < gVisita ? 'visitante' : 'empate';
+
+    return pronosticos.map(p => {
+      let puntos = 0;
+      const resultadoPronostico = p.golesLocal > p.golesVisitante ? 'local' :
+        p.golesLocal < p.golesVisitante ? 'visitante' : 'empate';
+
+      if (p.golesLocal === gLocal && p.golesVisitante === gVisita) {
+        puntos = 3;
+      } else if (resultadoPronostico === resultadoReal) {
+        puntos = 1;
+      }
+
+      return {
+        nombre: (p as any).nombreUsuario || p.usuarioId,
+        golesLocal: p.golesLocal, // Aquí los tienes separados como pediste
+        golesVisitante: p.golesVisitante,
+        puntosGanados: puntos,
+        fecha: (p as any).fechaHora
+      };
+    }).sort((a, b) => b.puntosGanados - a.puntosGanados);
+  }
+
   async asignarPuntosAPronosticos(
     partidoId: string,
     golesLocal: number,
     golesVisitante: number
   ) {
 
-    const pronosticos = (await this.obtenerPronosticosPorPartido(
-      partidoId
-    )) as Pronostico[];
+    const pronosticos = (await this.obtenerPronosticosPorPartido(partidoId)) as Pronostico[];
+    const resumenProcesado = [];
 
-    const resultadoReal =
-      golesLocal > golesVisitante
-        ? 'local'
-        : golesLocal < golesVisitante
-        ? 'visitante'
-        : 'empate';
+    const resultadoReal = golesLocal > golesVisitante ? 'local' :
+      golesLocal < golesVisitante ? 'visitante' : 'empate';
 
     for (const pronostico of pronosticos) {
       let puntos = 0;
 
-      const resultadoPronostico =
-        pronostico.golesLocal > pronostico.golesVisitante
-          ? 'local'
-          : pronostico.golesLocal < pronostico.golesVisitante
-          ? 'visitante'
-          : 'empate';
+      const resultadoPronostico = pronostico.golesLocal > pronostico.golesVisitante ? 'local' :
+        pronostico.golesLocal < pronostico.golesVisitante ? 'visitante' : 'empate';
 
-      const aciertaMarcador =
-        pronostico.golesLocal === golesLocal &&
-        pronostico.golesVisitante === golesVisitante;
+      const aciertaMarcador = pronostico.golesLocal === golesLocal && pronostico.golesVisitante === golesVisitante;
 
-      if (aciertaMarcador) {
-        puntos = 3;
-      } else if (resultadoPronostico === resultadoReal) {
-        puntos = 1;
-      }
+      if (aciertaMarcador) { puntos = 3; }
+      else if (resultadoPronostico === resultadoReal) { puntos = 1; }
 
       // Actualizar puntos del usuario
       const usuarioRef = doc(this.firestore, 'usuarios', pronostico.usuarioId);
@@ -209,6 +224,16 @@ export class FirebaseService {
         const puntosActuales = data['puntos'] || 0;
         await updateDoc(usuarioRef, { puntos: puntosActuales + puntos });
       }
+
+      // Agregar al resumen para devolverlo al Admin
+      resumenProcesado.push({
+        usuarioId: pronostico.usuarioId,
+        nombre: (pronostico as any).nombreUsuario || pronostico.usuarioId,
+        pronostico: `${pronostico.golesLocal} - ${pronostico.golesVisitante}`,
+        puntosGanados: puntos
+      });
     }
+
+    return resumenProcesado.sort((a, b) => b.puntosGanados - a.puntosGanados);
   }
 }

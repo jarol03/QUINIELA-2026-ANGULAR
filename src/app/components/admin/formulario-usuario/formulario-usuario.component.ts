@@ -12,19 +12,35 @@ import { FirebaseService } from '../../../services/firebase.service';
 export class FormularioUsuarioComponent {
   nombre: string = '';
   usuario: string = '';
-  mensaje: string = '';
+  mensajeExito = '';
+  mensajeError = '';
+  shakeTrigger = false;
 
   @Output() usuarioCreado = new EventEmitter<void>();
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
+  mostrarError(texto: string) {
+    this.mensajeExito = ''; // Limpiamos éxito
+    this.mensajeError = texto;
+    this.shakeTrigger = true;
 
-  async onSubmit(){
-    if(!this.nombre || !this.usuario) {
-      this.mensaje = 'Todos los campos son obligatorios';
+    // Reiniciamos el trigger para que la sacudida funcione la próxima vez
+    setTimeout(() => this.shakeTrigger = false, 300);
+  }
+
+  // Función única para mostrar éxito
+  mostrarExito(texto: string) {
+    this.mensajeError = ''; // Limpiamos error
+    this.mensajeExito = texto;
+  }
+
+  async onSubmit() {
+    if (!this.nombre || !this.usuario) {
+      this.mostrarError('Por favor, complete todos los campos.');
       return;
     }
-    
+
     await this.firebaseService.crearUsuario({
       nombre: this.nombre.trim(),
       usuario: this.usuario.trim(),
@@ -32,7 +48,7 @@ export class FormularioUsuarioComponent {
     });
 
     this.usuarioCreado.emit();
-    this.mensaje = 'Usuario creado correctamente';
+    this.mostrarExito('Usuario creado con éxito.');
 
     this.nombre = '';
     this.usuario = '';

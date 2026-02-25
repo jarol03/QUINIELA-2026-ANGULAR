@@ -20,17 +20,20 @@ export class FormularioPartidoComponent {
   local = '';
   visitante = '';
   fechaLimite = '';
-  mensaje = '';
+  mensajeExito = '';
+  mensajeError = '';
+  shakeTrigger = false;
+  cargando = false;
 
-  golesLocal: number | null = null;
-  golesVisitante: number | null = null;
+  golesLocal = 0;
+  golesVisitante: number = 0;
 
   @Input() partidoId: string | null = null;
   @Input() modoResultado = false;
 
   @Output() partidoCreado = new EventEmitter<void>();
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
   async ngOnInit() {
     if (this.partidoId) {
@@ -38,13 +41,13 @@ export class FormularioPartidoComponent {
     }
   }
 
-  
+
 
   async cargarPartido(id: string) {
     const partido = await this.firebaseService.obtenerPartido(id);
 
     if (!partido) {
-      this.mensaje = 'Partido no encontrado';
+      this.mostrarError('No se pudo cargar el partido');
       return;
     }
 
@@ -62,51 +65,88 @@ export class FormularioPartidoComponent {
     }
   }
 
+  // Función única para mostrar errores
+  mostrarError(texto: string) {
+    this.mensajeExito = ''; // Limpiamos éxito
+    this.mensajeError = texto;
+    this.shakeTrigger = true;
+
+    // Reiniciamos el trigger para que la sacudida funcione la próxima vez
+    setTimeout(() => this.shakeTrigger = false, 300);
+  }
+
+  // Función única para mostrar éxito
+  mostrarExito(texto: string) {
+    this.mensajeError = ''; // Limpiamos error
+    this.mensajeExito = texto;
+  }
+
   async onSubmit() {
-    if (this.modoResultado) {
-      if (this.golesLocal === null || this.golesVisitante === null) {
-        this.mensaje = 'Debes ingresar ambos resultados';
+    this.cargando = true;
+
+    try {
+      if (this.modoResultado) {
+        if (this.golesLocal === null || this.golesVisitante === null) {
+          this.mostrarError("Ambos campos de goles son obligatorios");
+          return;
+        }
+
+        if (this.golesLocal < 0 || this.golesVisitante < 0) {
+          this.mostrarError("Los goles no pueden ser negativos");
+          return;
+        }
+
+        const partidoActual = await this.firebaseService.obtenerPartido(this.partidoId!);
+
+        if (partidoActual?.estado === "Jugado") {
+          this.mostrarError("El resultado ya ha sido registrado previamente");
+          return;
+        }
+
+        await this.firebaseService.actualizarPartido(this.partidoId!, {
+          golesLocal: this.golesLocal,
+          golesVisitante: this.golesVisitante,
+          estado: 'Jugado',
+        });
+
+        await this.firebaseService.asignarPuntosAPronosticos(
+          this.partidoId!,
+          this.golesLocal,
+          this.golesVisitante
+        );
+
+        this.mostrarExito("Resultado registrado correctamente");
+
+        this.partidoCreado.emit();
         return;
       }
 
-      await this.firebaseService.actualizarPartido(this.partidoId!, {
-        golesLocal: this.golesLocal,
-        golesVisitante: this.golesVisitante,
-        estado: 'Jugado',
+      if (!this.local || !this.visitante || !this.fechaLimite) {
+        this.mostrarError('Todos los campos son obligatorios');
+        return;
+      }
+
+      await this.firebaseService.crearPartido({
+        local: this.local.trim(),
+        visitante: this.visitante.trim(),
+        fechaLimite: this.fechaLimite.trim(),
       });
 
-      await this.firebaseService.asignarPuntosAPronosticos(
-        this.partidoId!,
-        this.golesLocal,
-        this.golesVisitante
-      );
+      this.partidoCreado.emit();
+      this.mostrarExito('Partido creado correctamente');
 
-      this.mensaje = 'Resultado guardado correctamente';
-      return;
+      this.resetFormulario();
     }
-
-    if (!this.local || !this.visitante || !this.fechaLimite) {
-      this.mensaje = 'Todos los campos son obligatorios';
-      return;
+    finally {
+      this.cargando = false;
     }
-
-    await this.firebaseService.crearPartido({
-      local: this.local.trim(),
-      visitante: this.visitante.trim(),
-      fechaLimite: this.fechaLimite.trim(),
-    });
-
-    this.partidoCreado.emit();
-    this.mensaje = 'Partido creado correctamente';
-
-    this.resetFormulario();
   }
 
   private resetFormulario() {
     this.local = '';
     this.visitante = '';
     this.fechaLimite = '';
-    this.golesLocal = null;
-    this.golesVisitante = null;
+    this.golesLocal = 0;
+    this.golesVisitante = 0;
   }
 }

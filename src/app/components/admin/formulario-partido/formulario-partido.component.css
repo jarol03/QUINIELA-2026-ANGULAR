@@ -1,0 +1,162 @@
+/* Contenedor principal */
+.formulario-container {
+  width: 100%;
+}
+
+.titulo-seccion {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+/* SETUP CARD (CREACIÓN) */
+.setup-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--bg-tabla);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-borde);
+}
+
+.input-group-grid {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.input-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-block label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+}
+
+.vs-badge-mini {
+  padding-bottom: 12px;
+  font-weight: 900;
+  color: var(--color-borde);
+  font-size: 0.9rem;
+}
+
+/* MARCADOR ESTILO ESTADIO (RESULTADO) */
+.marcador-estadio {
+  background-color: #0e0e0e;
+  /* Un poco más oscuro que el fondo para resaltar */
+  border-radius: 16px;
+  padding: 25px 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid var(--color-borde);
+  margin-bottom: 5px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.team-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-primario);
+  letter-spacing: 1px;
+}
+
+.team-name {
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* CORRECCIÓN DE INPUTS DE GOLES */
+.score-input {
+  width: 75px !important;
+  height: 75px !important;
+  font-size: 2.5rem !important;
+  text-align: center !important;
+  padding: 0 !important;
+  background-color: var(--bg-tarjeta) !important;
+  border: 2px solid var(--color-borde) !important;
+  color: var(--color-exito) !important;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: text;
+}
+
+.score-input:focus {
+  border-color: var(--color-exito) !important;
+  box-shadow: 0 0 10px rgba(39, 174, 96, 0.3) !important;
+}
+
+/* Reset para inputs de número (Quitar flechas que bloquean) */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.vs-divider {
+  padding: 0 10px;
+  color: #444;
+  font-weight: bold;
+}
+
+/* MENSAJES */
+.feedback-msg {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.msg-exito {
+  background: rgba(39, 174, 96, 0.1);
+  color: var(--color-exito);
+  border: 1px solid var(--color-exito);
+}
+
+.msg-error {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--color-peligro);
+  border: 1px solid var(--color-peligro);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .input-group-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vs-badge-mini {
+    display: none;
+  }
+
+  .marcador-estadio {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
